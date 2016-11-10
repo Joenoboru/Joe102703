@@ -4,7 +4,9 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -12,6 +14,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
     int tmp, ch=-1;
     boolean chks[] = new boolean[4];
+    boolean tmps[];
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -126,8 +129,9 @@ public class MainActivity extends AppCompatActivity {
     public void click5(View v)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setTitle("多選一");
-        builder.setMultiChoiceItems(R.array.drinks, chks, new DialogInterface.OnMultiChoiceClickListener() {
+        builder.setTitle("多選多");
+        tmps = chks.clone();
+        builder.setMultiChoiceItems(R.array.drinks, tmps, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which, boolean isChecked) {
 
@@ -136,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
         builder.setPositiveButton("確定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                chks = tmps.clone();
                 String[] str = getResources().getStringArray(R.array.drinks);
                 TextView tv3 = (TextView) findViewById(R.id.textView3);
                 StringBuilder sb = new StringBuilder();
@@ -153,10 +158,72 @@ public class MainActivity extends AppCompatActivity {
         builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                tmps = chks.clone();
                 dialog.dismiss();
             }
         });
         builder.show();
     }
 
+    public void click6(View v)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle("自定");
+
+        builder.setView(R.layout.layout1);
+        builder.setPositiveButton("確定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(MainActivity.this, "按確定", Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(MainActivity.this, "按取消", Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNeutralButton("略過", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(MainActivity.this, "按略過", Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.show();
+    }
+
+    public void click7(View v)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle("自定");
+        LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
+        View myview = inflater.inflate(R.layout.layout1, null);
+        Button btn = (Button) myview.findViewById(R.id.button8);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "Click!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setView(myview);
+        builder.setPositiveButton("確定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(MainActivity.this, "按確定", Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(MainActivity.this, "按取消", Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNeutralButton("略過", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(MainActivity.this, "按略過", Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.show();
+    }
 }
